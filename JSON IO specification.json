@@ -1,0 +1,189 @@
+{
+    "device-name": "Cup-Thor App",
+    "device-type": "Oven",
+    "buffers-count": 7,
+    "input-buffers":{
+        "settings":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XPOST 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"Oven options",
+                "description":"From here you can choose different settings for the oven",
+                "token-type":"string", 
+                "byte-size":8,
+                "regex-rule": "^settings$",
+                "optional": false
+            },
+            {
+                "name":"Oven option parameter key",
+                "description": "Parameter key for the setting chosen",
+                "token-type":"string",
+                "byte-size":19,
+                "regex-rule": "^defrost$|^desired_temperature$|^ambient_light$|^ventilation$|^silent_mode$",
+                "optional": false
+            },
+            {
+                "name":"Oven option parameter value",
+                "description": "Parameter value for the setting chosen",
+                "token-type":"string",
+                "byte-size":4,
+                "regex-rule": "^true$|^false$|^2[0-9][0-9]?$|^1[0-9][0-9]$|^300$|^[1-6]$", 
+                "optional": false
+            }
+            ]
+        },
+
+        "cook":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XPOST 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"Oven cooking programs",
+                "description":"From here you can choose different cooking predefined cooking modes",
+                "token-type":"string", 
+                "byte-size":4,
+                "regex-rule": "^cook$", 
+                "optional": false
+            },
+            {
+                "name":"Oven cooking parameter value",
+                "description": "Parameter value for the cooking mode chosen. It will choose settings and output a file named after the food with \"working\" in it while it works or \"done\" if it finishes(the output done will take some time because it simulates cooking)",
+                "token-type":"string",
+                "byte-size":10,
+                "regex-rule": "^chicken$|^pork$|^vegetables$|^fish$",
+                "optional": false
+            },
+            {
+                "name":"Oven cooking parameter value",
+                "description": "Parameter value for keeping the food heated after the oven is done, default is false",
+                "token-type":"string",
+                "byte-size":4,
+                "regex-rule": "^true$|^false$$",
+                "optional": true
+            }
+            ]
+        },
+
+        "mediaplayer":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XPOST 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"Media player status and commands",
+                "description":"",
+                "token-type":"string", 
+                "byte-size":8,
+                "regex-rule": "^mediaplayer$",
+                "optional": false
+            },
+            {
+                "name":"Mediaplayer option parameter key",
+                "description": "Parameter key for the setting chosen",
+                "token-type":"string",
+                "byte-size":4,
+                "regex-rule": "^play$|^stop$", 
+                "optional": false
+            },
+            {
+                "name":"Mediaplayer song parameter value",
+                "description": "Parameter value for the setting chosen",
+                "token-type":"string",
+                "byte-size":5000,
+                "regex-rule": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$", 
+                "optional": false
+            }
+            ]
+        }
+
+
+	
+    },
+
+    "output-buffers":{
+        "settings":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XGET 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"Oven options",
+                "description":"From here you can further choose settings",
+                "token-type":"string", 
+                "byte-size":8, 
+                "regex-rule": "^settings$",
+                "optional": false
+            },
+            {
+                "name":"Current value",
+                "description": "Current value of the setting chosen",
+                "token-type":"string",
+                "byte-size":19,
+                "regex-rule": "^defrost$|^desired_temperature$|^ambient_light$|^ventilation$|^silent_mode$",
+                "optional": false
+            }
+            ]
+        },
+
+        "sensors":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XGET 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"Oven sensors",
+                "description":"From here you can further choose wich sensor. Camera sensor will read a file from CameraFakeInput and put a fistorted version of it in OutputCamera flder to simulate a real feed",
+                "token-type":"string", 
+                "byte-size":8, 
+                "regex-rule": "^settings$",
+                "optional": false
+            },
+            {
+                "name":"Current value",
+                "description": "Current value of the sensor chosen. The output will be in a file and you will get a confirmation or you will get a response with the status",
+                "token-type":"string",
+                "byte-size":10,
+                "regex-rule": "^thermostat$|^camera$|^foodweight$|^smoke_sensor$|^water_jet$",
+                "optional": false
+            }
+            ]
+        },
+
+
+        "cook":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XGET 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"Oven sensors",
+                "description":"Information on what is cooking",
+                "token-type":"string", 
+                "byte-size":4, 
+                "regex-rule": "^cook$",
+                "optional": false
+            }
+            ]
+        },
+		
+
+        "mediaplayer":{
+            "token-delimitators": "",
+            "protocol": "HTTP",
+            "prefix": "curl -XGET 'http://127.0.0.1:8080/'",
+            "buffer-tokens":[
+            {
+                "name":"MediaPlayer status",
+                "description":"Get current status of mediaplayer",
+                "token-type":"string", 
+                "byte-size":11, 
+                "regex-rule": "^mediaplayer$",
+                "optional": false
+            }
+            ]
+        }
+    }
+}
